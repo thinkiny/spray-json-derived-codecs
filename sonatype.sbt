@@ -1,33 +1,26 @@
-import java.time.Year
+homepage := Some(url("https://github.com/thinkiny/spray-json-derived-codecs"))
+versionScheme := Some("early-semver")
 
-lazy val contributors = Seq(
-  "paoloboni" -> "Paolo Boni"
-)
-
-pgpSecretRing := pgpPublicRing.value
-
-publishTo := sonatypePublishTo.value
-
-sonatypeProfileName := "io.github.paoloboni"
-publishMavenStyle := true
-pomExtra := {
-  <developers>
-    {
-    for ((username, name) <- contributors)
-      yield <developer>
-    <id>{username}</id>
-    <name>{name}</name>
-    <url>http://github.com/{username}</url>
-  </developer>
-  }
-  </developers>
-}
 scmInfo := Some(
   ScmInfo(
-    url("https://github.com/paoloboni/spray-json-derived-codecs"),
-    "scm:git@github.com:paoloboni/spray-json-derived-codecs.git"
+    url("https://github.com/thinkiny/sbt-gluon-plugin"),
+    "scm:git@github.com:thinkiny/sbt-gluon-plugin.git"
   )
 )
-headerLicense := Some(HeaderLicense.ALv2(Year.now().getValue.toString, "Paolo Boni"))
-licenses := Seq("Apache-2.0" -> url("https://www.apache.org/licenses/LICENSE-2.0.txt"))
-homepage := Some(url("https://github.com/paoloboni/spray-json-derived-codecs"))
+
+licenses := List(
+  "Apache 2" -> new URL("http://www.apache.org/licenses/LICENSE-2.0.txt")
+)
+
+developers := List(
+  Developer(
+    id = "001",
+    name = "Aaron An",
+    email = "thinkiny@gmail.com",
+    url = url("https://github.com/thinkiny/sbt-gluon-plugin")
+  )
+)
+
+sonatypeCredentialHost := Sonatype.sonatypeCentralHost
+publishTo := sonatypePublishToBundle.value
+publishMavenStyle := true

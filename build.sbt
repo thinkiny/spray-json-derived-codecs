@@ -2,13 +2,13 @@ import Dependencies._
 
 name := "spray-json-derived-codecs"
 
-lazy val scala212               = "2.12.18"
-lazy val scala213               = "2.13.12"
-lazy val scala3                 = "3.3.1"
+lazy val scala212               = "2.12.19"
+lazy val scala213               = "2.13.14"
+lazy val scala3                 = "3.3.3"
 lazy val supportedScalaVersions = List(scala212, scala213, scala3)
 
 ThisBuild / scalafmtOnCompile := false
-ThisBuild / organization      := "io.github.paoloboni"
+ThisBuild / organization      := "io.github.thinkiny"
 ThisBuild / startYear         := Some(2020)
 
 lazy val root = (project in file("."))
@@ -29,13 +29,12 @@ lazy val root = (project in file("."))
         )
       case _ =>
         Seq(
-          sprayJson.cross(CrossVersion.for3Use2_13),
+          sprayJson,
           scalacheck_3 % Test
         )
     })
   )
   .settings(scalacOptions --= Seq("-Vimplicits", "-Ywarn-value-discard"))
-  .enablePlugins(AutomateHeaderPlugin)
 
 import ReleaseTransformations._
 
