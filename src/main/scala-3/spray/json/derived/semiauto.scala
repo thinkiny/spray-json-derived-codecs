@@ -16,10 +16,11 @@
 
 package spray.json.derived
 
-import scala.deriving.Mirror
 import spray.json.JsonFormat
+import spray.json.RootJsonFormat
 import spray.json.derived.DiscriminatorMacro.getDiscriminator
 
+import scala.deriving.Mirror
 import scala.reflect.ClassTag
 
 object semiauto extends WithConfiguration {
@@ -27,6 +28,17 @@ object semiauto extends WithConfiguration {
       inline A: Mirror.Of[A],
       mk: LazyMk[A]
   ): JsonFormat[A] =
+    mk.mkJsonFormat.value(
+      Context(
+        discriminator = getDiscriminator[A].fold(Discriminator.default)(Discriminator.apply),
+        typeName = implicitly[ClassTag[A]].toString()
+      )
+    )
+
+  inline def deriveRootFormat[A: ClassTag](using
+      inline A: Mirror.Of[A],
+      mk: LazyMkRoot[A]
+  ): RootJsonFormat[A] =
     mk.mkJsonFormat.value(
       Context(
         discriminator = getDiscriminator[A].fold(Discriminator.default)(Discriminator.apply),

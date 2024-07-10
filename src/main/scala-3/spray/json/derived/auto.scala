@@ -21,12 +21,24 @@ import spray.json.JsonFormat
 import DiscriminatorMacro._
 
 import scala.reflect.ClassTag
+import spray.json.RootJsonFormat
 
 trait AutoDerivation extends WithConfiguration {
   implicit inline def deriveFormat[A: ClassTag](using
       inline A: Mirror.Of[A],
       mk: LazyMk[A]
   ): JsonFormat[A] =
+    mk.mkJsonFormat.value(
+      Context(
+        discriminator = getDiscriminator[A].fold(Discriminator.default)(Discriminator.apply),
+        typeName = implicitly[ClassTag[A]].toString()
+      )
+    )
+
+  implicit inline def deriveFormatRoot[A: ClassTag](using
+      inline A: Mirror.Of[A],
+      mk: LazyMkRoot[A]
+  ): RootJsonFormat[A] =
     mk.mkJsonFormat.value(
       Context(
         discriminator = getDiscriminator[A].fold(Discriminator.default)(Discriminator.apply),
